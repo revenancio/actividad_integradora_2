@@ -50,6 +50,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
       try {
         await _databaseHelper.insertUsuario(usuario);
 
+        // primero notificamos al usuario con un snackbar
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Usuario registrado'),
@@ -57,14 +58,8 @@ class _RegistroScreenState extends State<RegistroScreen> {
           ),
         );
 
-        // Navegación comentada temporalmente
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const PerfilScreen()),
-        );
-
-        // Mostrar mensaje en lugar de navegar
-        showDialog(
+        // mostramos diálogo de éxito y, cuando se cierre, navegamos al perfil
+        await showDialog(
           context: context,
           builder: (context) => AlertDialog(
             title: const Text('Éxito'),
@@ -77,6 +72,8 @@ class _RegistroScreenState extends State<RegistroScreen> {
             ],
           ),
         );
+
+        Navigator.pushReplacementNamed(context, '/perfil');
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Error: $e'), backgroundColor: Colors.red),
@@ -91,6 +88,13 @@ class _RegistroScreenState extends State<RegistroScreen> {
       appBar: AppBar(
         title: const Text('Registro'),
         backgroundColor: Colors.blue,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.person),
+            tooltip: 'Ver perfil',
+            onPressed: () => Navigator.pushNamed(context, '/perfil'),
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

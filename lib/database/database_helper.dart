@@ -46,9 +46,14 @@ class DatabaseHelper {
 
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
     if (oldVersion < 2) {
-      // add new column and indexes when upgrading from version 1
+      // SQLite does not allow non-constant defaults on ALTER TABLE.
+      // add column without default and then backfill existing rows
       await db.execute(
-        'ALTER TABLE usuarios ADD COLUMN fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP',
+        'ALTER TABLE usuarios ADD COLUMN fecha_registro TIMESTAMP',
+      );
+      // set current timestamp for existing records
+      await db.execute(
+        'UPDATE usuarios SET fecha_registro = CURRENT_TIMESTAMP WHERE fecha_registro IS NULL',
       );
       await db.execute('CREATE INDEX idx_email ON usuarios(email)');
       await db.execute('CREATE INDEX idx_nombre ON usuarios(nombre)');
@@ -85,4 +90,3 @@ class DatabaseHelper {
     return Sqflite.firstIntValue(result) ?? 0;
   }
 }
-

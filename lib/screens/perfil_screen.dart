@@ -41,6 +41,11 @@ class _PerfilScreenState extends State<PerfilScreen> {
             icon: const Icon(Icons.refresh),
             onPressed: _cargarUltimoUsuario,
           ),
+          IconButton(
+            icon: const Icon(Icons.edit),
+            tooltip: 'Registrar nuevo',
+            onPressed: () => Navigator.pushReplacementNamed(context, '/'),
+          ),
         ],
       ),
       body: _cargando

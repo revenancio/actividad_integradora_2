@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import '../database/database_helper.dart';
 import '../models/usuario.dart';
 
@@ -7,6 +8,10 @@ void main() {
     late DatabaseHelper dbHelper;
 
     setUp(() async {
+      // use ffi implementation for desktop testing
+      sqfliteFfiInit();
+      databaseFactory = databaseFactoryFfi;
+
       dbHelper = DatabaseHelper();
       final db = await dbHelper.database;
       await db.delete('usuarios');
