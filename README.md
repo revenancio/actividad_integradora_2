@@ -4,7 +4,7 @@ Aplicación Flutter que permite registrar información básica de un usuario a t
 
 ## Tecnologías utilizadas
 
-- Flutter 3.x / Dart 3
+- Flutter  3.38.9 / Dart 3
 - sqflite (SQLite para Flutter)
 - path para construir rutas de base de datos en dispositivos
 - image_picker para selección de foto de perfil
